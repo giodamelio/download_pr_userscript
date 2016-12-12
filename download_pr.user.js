@@ -30,7 +30,7 @@
     outputCommands.push(`cd ${repo}`);
 
     // Create the command to fetch and checkout the specific pull request
-    const remoteBranch = document.querySelector('#partial-discussion-header > div.TableObject.gh-header-meta > div.TableObject-item.TableObject-item--primary > span.commit-ref.current-branch.css-truncate.user-select-contain.expandable.head-ref > span:nth-child(3)').innerHTML;
+    const remoteBranch = document.querySelector('#partial-discussion-header > div.TableObject.gh-header-meta > div.TableObject-item.TableObject-item--primary > span.commit-ref.current-branch.css-truncate.user-select-contain.expandable.head-ref > span:nth-child(2)').innerHTML;
     outputCommands.push(`git fetch origin pull/${pullNumber}/head:${remoteBranch}`);
     outputCommands.push(`git checkout ${remoteBranch}`);
 
