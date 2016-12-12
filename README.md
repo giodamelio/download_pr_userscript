@@ -2,4 +2,4 @@
 
 A quick and dirty userscript that adds a button to github pull requests to allow quick cloning.
 
-Make sure you have Tampermonkey(Chrome) or Greasemonkey(Firefox) then [click here](https://github.com/giodamelio/download_pr_userscript/raw/master/download_pr.user.js) to install.
+Make sure you have [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)(Chrome) or [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/)(Firefox) then [click here](https://github.com/giodamelio/download_pr_userscript/raw/master/download_pr.user.js) to install.
