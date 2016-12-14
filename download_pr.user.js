@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Clone Github Pullrequest
 // @namespace    https://giodamelio.com
-// @version      0.1
+// @version      0.2.0
 // @description  Gives you the commands to clone a github pull request easily
 // @author       Gio d'Amelio
 // @match        https://github.com/*/*/pull/*
@@ -30,9 +30,9 @@
     outputCommands.push(`cd ${repo}`);
 
     // Create the command to fetch and checkout the specific pull request
-    const remoteBranch = document.querySelector('#partial-discussion-header > div.TableObject.gh-header-meta > div.TableObject-item.TableObject-item--primary > span.commit-ref.current-branch.css-truncate.user-select-contain.expandable.head-ref > span:nth-child(2)').innerHTML;
-    outputCommands.push(`git fetch origin pull/${pullNumber}/head:${remoteBranch}`);
-    outputCommands.push(`git checkout ${remoteBranch}`);
+    const pullAuthorName = document.getElementsByClassName('author')[1].text.trim();
+    outputCommands.push(`git fetch origin pull/${pullNumber}/head:${pullAuthorName}`);
+    outputCommands.push(`git checkout ${pullAuthorName}`);
 
     // Join the output commands togather so they can be run
     GM_setClipboard(outputCommands.join('; '));
