@@ -24,6 +24,7 @@
   button.onclick = function() {
     // Get the user, repo and pull number from the url
     const [_, user, repo, _1, pullNumber] = window.location.pathname.split('/');
+    const branchName = document.body.querySelector('.head-ref').textContent;
 
     // Create the first command to pull the repo
     outputCommands.push(`git clone https://github.com/${user}/${repo}`);
@@ -31,8 +32,8 @@
 
     // Create the command to fetch and checkout the specific pull request
     const pullAuthorName = document.getElementsByClassName('author')[1].text.trim();
-    outputCommands.push(`git fetch origin pull/${pullNumber}/head:${pullAuthorName}`);
-    outputCommands.push(`git checkout ${pullAuthorName}`);
+    outputCommands.push(`git fetch origin pull/${pullNumber}/head:${branchName}`);
+    outputCommands.push(`git checkout ${branchName}`);
 
     // Join the output commands togather so they can be run
     GM_setClipboard(outputCommands.join('; '));
