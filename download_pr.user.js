@@ -18,25 +18,35 @@
   const button = document.createElement('button');
   button.innerHTML = 'Clone Pull Request';
   button.className = 'btn btn-sm';
-  document.body.getElementsByClassName('gh-header-title')[0].appendChild(button);
+  document.body
+    .getElementsByClassName('gh-header-title')[0]
+    .appendChild(button);
 
   // When the user clicks the button copy the commands
   button.onclick = function() {
     // Get the user, repo and pull number from the url
     const [_, user, repo, _1, pullNumber] = window.location.pathname.split('/');
-    const branchName = document.body.querySelector('.head-ref').textContent;
 
-    // Create the first command to pull the repo
-    outputCommands.push(`git clone https://github.com/${user}/${repo}`);
-    outputCommands.push(`cd ${repo}`);
+    // Make a request to the github api
+    fetch(`https://api.github.com/repos/${user}/${repo}/pulls/${pullNumber}`)
+      .then(data => data.json())
+      .then(data => {
+        // Create the first command to pull the repo
+        outputCommands.push(
+          `git clone https://github.com/${data.base.repo.owner.login}/${data
+            .base.repo.name}`
+        );
+        outputCommands.push(`cd ${repo}`);
 
-    // Create the command to fetch and checkout the specific pull request
-    const pullAuthorName = document.getElementsByClassName('author')[1].text.trim();
-    outputCommands.push(`git fetch origin pull/${pullNumber}/head:${branchName}`);
-    outputCommands.push(`git checkout ${branchName}`);
+        // Create the command to fetch and checkout the specific pull request
+        outputCommands.push(
+          `git fetch origin pull/${data.number}/head:${data.head.ref}`
+        );
+        outputCommands.push(`git checkout ${data.head.ref}`);
 
-    // Join the output commands togather so they can be run
-    GM_setClipboard(outputCommands.join('; '));
-    alert('Commands copied to clipboard');
+        // Join the output commands togather so they can be run
+        GM_setClipboard(outputCommands.join('; '));
+        alert('Commands copied to clipboard');
+      });
   };
 })();
