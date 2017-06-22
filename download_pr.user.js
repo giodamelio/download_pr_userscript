@@ -38,11 +38,17 @@
         );
         outputCommands.push(`cd ${repo}`);
 
+        // You can't clone to the master branch since it already exists,
+        // so we choose another name if the made a pull from master
+        const localBranchName = data.head.ref === 'master'
+          ? 'not-master'
+          : data.head.ref;
+
         // Create the command to fetch and checkout the specific pull request
         outputCommands.push(
-          `git fetch origin pull/${data.number}/head:${data.head.ref}`
+          `git fetch origin pull/${data.number}/head:${localBranchName}`
         );
-        outputCommands.push(`git checkout ${data.head.ref}`);
+        outputCommands.push(`git checkout ${localBranchName}`);
 
         // Join the output commands togather so they can be run
         GM_setClipboard(outputCommands.join('; '));
