@@ -10,7 +10,6 @@
 
 (function() {
   'use strict';
-
   // Keep track of the output commands
   const outputCommands = [];
 
@@ -29,7 +28,14 @@
 
     // Make a request to the github api
     fetch(`https://api.github.com/repos/${user}/${repo}/pulls/${pullNumber}`)
-      .then(data => data.json())
+      .then(response => {
+        return response.json().then(data => {
+          if (response.status !== 200) {
+            throw new Error(data.message);
+          }
+          return data;
+        });
+      })
       .then(data => {
         // Create the first command to pull the repo
         outputCommands.push(
@@ -53,6 +59,9 @@
         // Join the output commands togather so they can be run
         GM_setClipboard(outputCommands.join('; '));
         alert('Commands copied to clipboard');
+      })
+      .catch(err => {
+        alert(`Something went wrong:\n  ${err.message}`);
       });
   };
 })();
